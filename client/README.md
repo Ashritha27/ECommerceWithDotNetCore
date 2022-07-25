@@ -46,4 +46,6 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 
-Testing branch strategy
+Testing branch strategy\
+
+Testing branch strategy 2
