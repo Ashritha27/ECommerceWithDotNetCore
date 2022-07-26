@@ -1,6 +1,9 @@
+import { CssBaseline } from '@mui/material';
+import { Container } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import Catalog from '../../features/Catalog/Catalog';
 import { Product } from '../models/product';
+import Header from './Header';
 
 function App() {
 
@@ -18,12 +21,15 @@ function App() {
 
   return (
 
-    <div className="app">
-      <h1>App name</h1>
+    <>
+      <CssBaseline />
+      <Header />
+      <Container>
       <Catalog products={products} addProducts={addProducts}/>
+      </Container>
       
 
-    </div>
+    </>
   );
 }
 
