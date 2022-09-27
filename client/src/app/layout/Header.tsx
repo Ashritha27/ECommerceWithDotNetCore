@@ -2,6 +2,7 @@
 import { ShoppingBasket } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography ,Switch, ListItem, List, Box, Badge} from "@mui/material";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 const midLink = [
     {title:'Catalog',path:'/catalog'},
@@ -15,6 +16,7 @@ const midLink = [
 
 
 export default function Header(props:any){
+    const [cartCount,setCartCount] = useState(0);
     return (
         <AppBar position='static' sx={{mb:4 }}>
             <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
@@ -36,7 +38,7 @@ export default function Header(props:any){
                 <Box >
                 <List sx={{display:'flex',flexDirection:'row' }}>
                     
-                    <Badge badgeContent={4} color="secondary" >
+                    <Badge badgeContent={cartCount} color="secondary" >
                         <ShoppingCartIcon />
                     </Badge>
                     {endLink.map(page => (
