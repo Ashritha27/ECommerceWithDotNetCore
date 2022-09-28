@@ -59,7 +59,7 @@ namespace API
             app.UseRouting();
 
             app.UseCors(opt=>{
-                opt.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                opt.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
             });
 
             app.UseAuthorization();
