@@ -11,7 +11,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public int Quantity {get ;set;}
-        //navidation prop
+        //navigation property
         public int ProductId {get;set;}
         public Product Product{get;set;}
 

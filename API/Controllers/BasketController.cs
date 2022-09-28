@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,17 +19,29 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Basket>> GetBasket(){
+        [HttpGet(Name ="GetBasket")]
+        public async Task<ActionResult<BasketDTO>> GetBasket(){
             var baskets = await RetrieveBasket();
 
             if(baskets == null) return NotFound();
-            return baskets;
+            return new BasketDTO{
+                Id=baskets.Id,
+                BuyerId=baskets.BuyerId,
+                Items=baskets.Items.Select(item=> new BasketItemDTO{
+                    ProductId=item.ProductId,
+                    Name=item.Product.Name,
+                    Price=item.Product.Price,
+                    PictureUrl=item.Product.PictureURL,
+                    Brand=item.Product.Brand,
+                    Quantity=item.Product.QuantityInStock
+
+                }).ToList()
+            };
 
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddItemToBasket(int productId , int quantity){
+        public async Task<ActionResult<BasketDTO>> AddItemToBasket(int productId , int quantity){
             //get basket
             Basket basket = await RetrieveBasket();
 
@@ -41,8 +54,8 @@ namespace API.Controllers
             basket.AddItem(product , quantity);
 
             var result = await _context.SaveChangesAsync() > 0;
-            if(result)
-            return StatusCode(201);
+            
+            if (result) return CreatedAtRoute("GetBasket", MapBasketToDto(basket));
 
             return BadRequest(new ProblemDetails{Title = "Problem Saving item to table"});
         }
@@ -76,6 +89,24 @@ namespace API.Controllers
             _context.Baskets.Add(basket);
             return basket;
 
+        }
+        private BasketDTO MapBasketToDto(Basket basket)
+        {
+            return new BasketDTO
+            {
+                Id = basket.Id,
+                BuyerId = basket.BuyerId,
+                Items = basket.Items.Select(item => new BasketItemDTO
+                {
+                    ProductId = item.ProductId,
+                    Name = item.Product.Name,
+                    Price = item.Product.Price,
+                    PictureUrl = item.Product.PictureURL,
+                    Type = item.Product.Type,
+                    Brand = item.Product.Brand,
+                    Quantity = item.Quantity
+                }).ToList()
+            };
         }
     }
 }

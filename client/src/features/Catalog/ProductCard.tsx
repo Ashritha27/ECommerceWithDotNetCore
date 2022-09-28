@@ -1,21 +1,28 @@
 import { ListItem, ListItemAvatar, Avatar, ListItemText, Button, Card, CardActions, CardContent, CardMedia, Typography, CardHeader } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../../app/models/product";
 import {Store} from "../../../Store.js"
+import { LoadingButton } from "@mui/lab";
+import axios from "axios";
+import { useStoreContext } from "../../app/context/StoreContext";
 
 interface Props{
     product : Product;
 }
 export default function ProductCard({product} : Props){
-  //const { state,dispatch : ctxDispatch} = useContext(Store);
 
-  const buttonClickHandler =(e : any) => {
-    // dispatch({type: 'CART_ADD' , payload : {
-    //   ...state
-    // }})
+  const [loading,setLoading] = useState(false);
+  const {setBasket} = useStoreContext();
 
+  function addClickHandler(productId:number){
+    setLoading(true);
+    axios.post(`http://localhost:5000/api/basket?productId=${productId}&quantity=1`,{withCredentials:true})
+    .then(basket => setBasket(basket.data))
+    .catch(err => console.log(err))
+    .finally(()=>setLoading(false))
   }
+
     return (
       <Card>
         <CardHeader avatar={
@@ -43,7 +50,7 @@ export default function ProductCard({product} : Props){
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={buttonClickHandler}>Add to cart</Button>
+        <LoadingButton loading={loading} onClick={()=>addClickHandler(product.id)} size="small" >Add to cart</LoadingButton>
         <Button component={Link} to={`/catalog/${product.id}`} size="small">View</Button>
       </CardActions>
     </Card>
