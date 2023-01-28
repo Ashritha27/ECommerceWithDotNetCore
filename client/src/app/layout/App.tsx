@@ -7,6 +7,7 @@ import AboutPage from '../../features/about/AboutPage';
 import BasketPage from '../../features/basket/BasketPage';
 import Catalog from '../../features/Catalog/Catalog';
 import ProductDetails from '../../features/Catalog/ProductDetails';
+import CheckoutPage from '../../features/checkout/CheckoutPage';
 import ContactPage from '../../features/contact/ContactPage';
 import HomePage from '../../features/home/HomePage';
 import { useStoreContext } from '../context/StoreContext';
@@ -58,6 +59,8 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/basket" element={<BasketPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+
         </Routes>
       </Container>
     </ThemeProvider>
